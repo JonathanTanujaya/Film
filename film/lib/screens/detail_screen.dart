@@ -1,5 +1,5 @@
+import 'package:film/models/movie.dart';
 import 'package:flutter/material.dart';
-import 'package:pilem/models/movie.dart';
 
 class DetailScreen extends StatelessWidget {
   final Movie movie;
@@ -8,77 +8,78 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Pilem"),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.network(
-                    "https://image.tmdb.org/t/p/w500${movie.posterPath}",
-                    width: double.infinity,
-                    height: 300,
-                    fit: BoxFit.cover),
+      appBar: AppBar(
+        title: Text(movie.title),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.network(
+                "https://image.tmdb.org/t/p/w500${movie.posterPath}",
+                width: double.infinity,
+                height: 300,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                "Overview: ",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(movie.overview),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(children: [
+                const Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                const Text(
+                  "Release Date",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 SizedBox(
-                  height: 20,
+                  width: 10,
                 ),
-                Text(
-                  "Overview: ",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(movie.overview),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "Release Date: ",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(movie.releaseDate)
-                  ],
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "Rate: ",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(movie.voteAverage as String)
-                  ],
-                )
+                Text(movie.releaseDate)
               ],
-            ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(children: [
+                const Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                const Text(
+                  "Rating",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(movie.voteAverage.toString())
+              ],
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

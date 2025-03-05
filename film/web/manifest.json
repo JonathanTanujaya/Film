@@ -1,6 +1,6 @@
 {
-    "name": "pilem",
-    "short_name": "pilem",
+    "name": "film",
+    "short_name": "film",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
