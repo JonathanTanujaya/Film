@@ -1,4 +1,5 @@
 import 'package:film/models/movie.dart';
+import 'package:film/screens/detail_screen.dart';
 import 'package:film/services/api_service.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_searchMovie);
+    _searchController.addListener(_searchMovies);
   }
 
   @override
@@ -26,18 +27,20 @@ class _SearchScreenState extends State<SearchScreen> {
     super.dispose();
   }
 
-  void _searchMovie() async {
+  void _searchMovies() async {
     if (_searchController.text.isEmpty) {
       setState(() {
         _searchResult.clear();
       });
-
-      final List<Map<String, dynamic>> searchData =
-          await _apiService.searchMovies(_searchController.text);
-      setState(() {
-        _searchResult = searchData.map((e) => Movie.fromJson(e)).toList();
-      });
+      return;
     }
+
+    final List<Map<String, dynamic>> searchData =
+        await _apiService.searchMovies(_searchController.text);
+
+    setState(() {
+      _searchResult = searchData.map((e) => Movie.fromJson(e)).toList();
+    });
   }
 
   @override
@@ -47,13 +50,16 @@ class _SearchScreenState extends State<SearchScreen> {
         title: const Text('Search'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             Container(
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
+                  border: Border.all(
+                    color: Colors.cyan,
+                    width: 1.0,
+                  ),
                   borderRadius: BorderRadius.circular(5.0)),
               child: Row(
                 children: [
@@ -61,7 +67,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: TextField(
                       controller: _searchController,
                       decoration: const InputDecoration(
-                          hintText: 'Search Movie', border: InputBorder.none),
+                        hintText: 'Type Here to Search...',
+                        border: InputBorder.none,
+                      ),
                     ),
                   ),
                   Visibility(
@@ -81,9 +89,34 @@ class _SearchScreenState extends State<SearchScreen> {
             const SizedBox(
               height: 16,
             ),
-            ListView.builder(
-              itemBuilder: (context, index) {},
-            )
+            Expanded(
+              child: ListView.builder(
+                itemCount: _searchResult.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final Movie movie = _searchResult[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: ListTile(
+                      leading: Image.network(
+                          movie.posterPath != ''
+                              ? 'https://image.tmdb.org/t/p/w500${movie.posterPath}'
+                              : 'https://placehold.co/50x75?text=No+Image',
+                          height: 50,
+                          width: 50,
+                          fit: BoxFit.cover),
+                      title: Text(movie.title),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailScreen(movie: movie)));
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

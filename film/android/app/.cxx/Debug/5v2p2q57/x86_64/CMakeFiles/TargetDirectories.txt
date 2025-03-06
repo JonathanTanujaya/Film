@@ -1,0 +1,2 @@
+D:/Film/film/android/app/.cxx/Debug/5v2p2q57/x86_64/CMakeFiles/edit_cache.dir
+D:/Film/film/android/app/.cxx/Debug/5v2p2q57/x86_64/CMakeFiles/rebuild_cache.dir
