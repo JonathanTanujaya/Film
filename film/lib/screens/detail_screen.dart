@@ -27,12 +27,22 @@ class _DetailScreenState extends State<DetailScreen> {
     setState(() {
       _isFavorite = !_isFavorite;
       if (_isFavorite) {
-        final String movieJson = jsonEncode(widget.movie.to)
+        final String movieJson = jsonEncode(widget.movie.toJson());
+        prefs.setString('movie_${widget.movie}', movieJson);
+        List<String> favoriteMovieIds =
+            prefs.getStringList('favoriteMovie') ?? [];
+        favoriteMovieIds.add(widget.movie.toString());
+        prefs.setStringList('favoriteMovie', favoriteMovieIds);
+      } else {
+        final String movieJson = jsonEncode(widget.movie.toJson());
+        prefs.remove('movie_${widget.movie}');
+        List<String> favoriteMovieIds =
+            prefs.getStringList('favoriteMovie') ?? [];
+        favoriteMovieIds.remove(widget.movie.toString());
+        prefs.setStringList('favoriteMovie', favoriteMovieIds);
       }
     });
   }
-
-
 
   @override
   void initState() {
@@ -53,12 +63,21 @@ class _DetailScreenState extends State<DetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.network(
-                "https://image.tmdb.org/t/p/w500${widget.movie.posterPath}",
-                width: double.infinity,
-                height: 300,
-                fit: BoxFit.cover,
-              ),
+              Stack(children: [
+                Image.network(
+                  "https://image.tmdb.org/t/p/w500${widget.movie.posterPath}",
+                  width: double.infinity,
+                  height: 300,
+                  fit: BoxFit.cover,
+                ),
+                Positioned(
+                    child: IconButton(
+                        onPressed: _toggleFavorite,
+                        icon: Icon(
+                          _isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: Colors.red,
+                        )))
+              ]),
               const SizedBox(
                 height: 20,
               ),
