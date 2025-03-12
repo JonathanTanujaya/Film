@@ -25,7 +25,7 @@ class Movie {
       posterPath: json['poster_path'] ?? '',
       backdropPath: json['backdrop_path'] ?? '',
       releaseDate: json['release_date'] ?? '',
-      voteAverage: (json['vote_average'] ?? '').toDouble(),
+      voteAverage: json['vote_average'] ?? 0.0,
     );
   }
 
@@ -34,10 +34,10 @@ class Movie {
       'id': id,
       'title': title,
       'overvie': overview,
-      'posterPath': posterPath,
-      'backdropPath': backdropPath,
-      'releaseDate': releaseDate,
-      'voteAverage': voteAverage
+      'poster_path': posterPath,
+      'backdrop_path': backdropPath,
+      'release_date': releaseDate,
+      'vote_average': voteAverage
     };
   }
 }

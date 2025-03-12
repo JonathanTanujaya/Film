@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:film/models/movie.dart';
 import 'package:film/screens/detail_screen.dart';
 import 'package:film/services/api_service.dart';
@@ -97,13 +98,20 @@ class _SearchScreenState extends State<SearchScreen> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: ListTile(
-                      leading: Image.network(
-                          movie.posterPath != ''
-                              ? 'https://image.tmdb.org/t/p/w500${movie.posterPath}'
-                              : 'https://placehold.co/50x75?text=No+Image',
-                          height: 50,
-                          width: 50,
-                          fit: BoxFit.cover),
+                      leading: CachedNetworkImage(
+                        imageUrl:
+                            'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                        height: 50,
+                        width: 50,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.blue,
+                            ),
+                          );
+                        },
+                      ),
                       title: Text(movie.title),
                       onTap: () {
                         Navigator.push(
